@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu d'Énigmes - Thème Mariage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+        #game {
+            margin: 50px auto;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background-color: #fff;
+            width: 400px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        #message {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        #finalMessage {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 30px;
+            display: none; /* Cacher le message au début */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jeu d'Énigmes !</h1>
+    <div id="game">
+        <div id="questionContainer"></div>
+        <div id="answerContainer"></div>
+        <button id="nextButton" onclick="nextQuestion()" style="display: none;">Suivant</button>
+        <button id="revealButton" onclick="revealMessage()" style="display: none;">J'ai quelque chose à te demander...</button>
+        <p id="message"></p>
+        <p id="finalMessage">Veux-tu être mon témoin ? 🎉</p>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "En quelle année Margaux et moi nous nous sommes mis ensemble ?",
+                answer: "2016" // Réponse mise à jour
+            },
+            {
+                question: "Quel est le mois où la plupart des mariages ont lieu ?",
+                answer: "juin"
+            },
+            {
+                question: "Après les mariés, quel rôle est le plus important dans un mariage ?",
+                answer: "témoin"
+            }
+        ];
+
+        let currentQuestion = 0;
+
+        function showQuestion() {
+            const questionContainer = document.getElementById("questionContainer");
+            const answerContainer = document.getElementById("answerContainer");
+            const message = document.getElementById("message");
+            const finalMessage = document.getElementById("finalMessage");
+
+            if (currentQuestion < questions.length) {
+                questionContainer.innerText = questions[currentQuestion].question;
+                answerContainer.innerHTML = '<input type="text" id="answerInput" placeholder="Votre réponse ici"><button onclick="checkAnswer()">Valider</button>';
+                message.innerText = "";
+                finalMessage.style.display = "none"; // Cacher le message final
+                document.getElementById("nextButton").style.display = "none";
+                document.getElementById("revealButton").style.display = "none";
+            } else {
+                questionContainer.innerText = "Bravo, Yohan ! Tu as résolu toutes les énigmes.";
+                answerContainer.innerHTML = "";
+                message.innerText = "";
+                document.getElementById("nextButton").style.display = "none";
+                document.getElementById("revealButton").style.display = "block"; // Afficher le bouton pour révéler le message
+            }
+        }
+
+        function checkAnswer() {
+            const answerInput = document.getElementById("answerInput").value.toLowerCase();
+            const message = document.getElementById("message");
+            
+            if (answerInput === questions[currentQuestion].answer) {
+                currentQuestion++;
+                message.innerText = "Bonne réponse !";
+                document.getElementById("nextButton").style.display = "block";
+            } else {
+                message.innerText = "Mauvaise réponse, essaie encore !";
+            }
+        }
+
+        function nextQuestion() {
+            showQuestion();
+        }
+
+        function revealMessage() {
+            document.getElementById("questionContainer").innerText = ""; // Effacer la question
+            document.getElementById("answerContainer").innerHTML = ""; // Effacer le champ de réponse
+            document.getElementById("message").innerText = ""; // Effacer le message
+            document.getElementById("finalMessage").style.display = "block"; // Afficher le message final
+            document.getElementById("revealButton").style.display = "none"; // Cacher le bouton après révélation
+        }
+
+        // Affiche la première question au chargement
+        showQuestion();
+    </script>
+
+</body>
+</html>
